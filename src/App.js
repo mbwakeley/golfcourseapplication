@@ -1,26 +1,48 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import "./App.css";
+import { Container, Row, Col } from "reactstrap";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { fetchAllCustomers, fetchOneCustomer } from "./store/customers/actions";
+import { fetchAllTeetimes, fetchOneTeetime } from "./store/teetimes/actions";
+import { connect } from "react-redux";
+import TopNav from "./components/layout/TopNav";
+import Dashboard from "./components/dashboard/Dashboard";
+import NewTeeTimeForm from "./components/dashboard/NewTeeTimeForm";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  componentDidMount() {
+    this.props.dispatch(fetchAllCustomers());
+    this.props.dispatch(fetchAllTeetimes());
+    this.props.dispatch(fetchOneCustomer());
+    this.props.dispatch(fetchOneTeetime());
+  }
+  render() {
+    return (
+      <Router>
+        <div className="App">
+          <TopNav />
+          <Container>
+            <Row>
+              <Col>
+                <Switch>
+                  <Route exact path="/" component={Dashboard} />
+                  {/* <Route path="/" component={TeeTimes} /> */}
+                  <Route path="/newteetime" component={NewTeeTimeForm} />
+                  {/* <Route path="/" component={NewTeeTimeForm} /> */}
+                </Switch>
+              </Col>
+            </Row>
+          </Container>
+        </div>
+      </Router>
+    );
+  }
 }
 
-export default App;
+const mapStateToProps = state => {
+  return {
+    customers: state.customers,
+    teetimes: state.teetimes
+  };
+};
+export default connect(mapStateToProps)(App);
