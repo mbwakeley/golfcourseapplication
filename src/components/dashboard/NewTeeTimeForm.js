@@ -1,14 +1,14 @@
 import React from "react";
 import { connect } from "react-redux";
 import moment from "moment";
-import { Form, FormGroup, Input, Button, Col, Label } from "reactstrap";
+import { Form, FormGroup, Input, Button, Row, Col, Label } from "reactstrap";
 import { addTeetime } from "../../store/teetimes/actions";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 class NewTeeTimeForm extends React.Component {
   state = {
-    time: moment()
+    time: ""
   };
 
   handleDate = date => {
@@ -20,13 +20,11 @@ class NewTeeTimeForm extends React.Component {
     this.props.addTeetime({
       time: this.state.time
     });
-    this.setState({
-      time: moment()
-    });
   };
   //yyyy-MM-dd'T'HH:mm:ssZ is the format
 
   render() {
+    console.log("state time", this.state.time);
     const customerOptions =
       this.props.customers.length > 0 &&
       this.props.customers.map((customer, i) => {
@@ -44,7 +42,7 @@ class NewTeeTimeForm extends React.Component {
     return (
       <div style={{ display: "flex" }}>
         <div class="container">
-          <h2 class="text-center mt-5">Add New Car</h2>
+          <h2 class="text-center mt-5">Add Tee Time</h2>
           <div class="col">
             <hr />
             <Form onSubmit={this.handleSubmit}>
@@ -52,64 +50,21 @@ class NewTeeTimeForm extends React.Component {
                 <FormGroup>
                   <DatePicker
                     className="mt-3"
-                    selected={new Date()}
+                    selected={this.state.time}
                     onChange={date => this.handleDate(date)}
                     showTimeSelect
                     timeFormat="hh:mm "
                     timeIntervals={15}
                     timeCaption="time"
-                    dateFormat="MMMM d, yyyy h:mm aa"
+                    dateFormat="MMMM d, yyyy hh:mm aa"
                   />
                 </FormGroup>
-                <FormGroup>
-                  <Label for="customer">Customer</Label>
-                  <Input
-                    type="select"
-                    name="customer_id"
-                    id="customerId"
-                    onChange={e => this.handleSelect(e)}
-                  >
-                    value={this.state.customer_id}
-                    <option></option>
-                    {customerOptions}
-                  </Input>
-                </FormGroup>
-                <FormGroup>
-                  <Input
-                    type="select"
-                    name="customer_id"
-                    id="customerId"
-                    onChange={e => this.handleSelect(e)}
-                  >
-                    value={this.state.customer_id}
-                    <option></option>
-                    {customerOptions}
-                  </Input>
-                </FormGroup>
-                <FormGroup>
-                  <Input
-                    type="select"
-                    name="customer_id"
-                    id="customerId"
-                    onChange={e => this.handleSelect(e)}
-                  >
-                    value={this.state.customer_id}
-                    <option></option>
-                    {customerOptions}
-                  </Input>
-                </FormGroup>
-                <FormGroup>
-                  <Input
-                    type="select"
-                    name="customer_id"
-                    id="customerId"
-                    onChange={e => this.handleSelect(e)}
-                  >
-                    value={this.state.customer_id}
-                    <option></option>
-                    {customerOptions}
-                  </Input>
-                </FormGroup>
+                <select class="selectpicker">
+                  <option>Mustard</option>
+                  <option>Ketchup</option>
+                  <option>Barbecue</option>
+                </select>
+
                 <Button className="ml-3" color="primary">
                   Add Tee Time
                 </Button>

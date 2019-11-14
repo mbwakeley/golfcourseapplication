@@ -55,12 +55,12 @@ export const fetchOneTeetime = id => async dispatch => {
   }
 };
 
-export const addTeetime = newTeetime => async dispatch => {
+export const addTeetime = date => async dispatch => {
   dispatch({
     type: ADD_TEETIME_PENDING
   });
   try {
-    let response = await axios.post(BASE_URL, newTeetime);
+    let response = await axios.post(BASE_URL, date);
     dispatch({
       type: ADD_TEETIME_SUCCESS,
       payload: response.data
